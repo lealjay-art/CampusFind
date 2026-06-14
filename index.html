@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CampusFind – Campus Lost & Found Board</title>
+  <meta name="description" content="Browse and report lost or found items on campus.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+
+  <!-- ── Navbar ── -->
+  <nav class="cf-navbar navbar navbar-expand-lg">
+    <div class="container">
+      <a class="navbar-brand" href="index.html">
+        <span class="brand-icon">📡</span>
+        <span class="brand-name">CampusFind</span>
+      </a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNav">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="mainNav">
+        <ul class="navbar-nav ms-auto align-items-lg-center gap-1">
+          <li class="nav-item"><a class="nav-link active" href="index.html">Home</a></li>
+          <li class="nav-item"><a class="nav-link" href="submit.html">Report Item</a></li>
+          <li class="nav-item ms-lg-2">
+            <a class="nav-link btn-nav-admin" href="login.html">Admin Portal</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!-- ── Hero ── -->
+  <section class="cf-hero">
+    <div class="container hero-content">
+      <div class="row align-items-center">
+        <div class="col-lg-8">
+          <div class="hero-eyebrow">Campus Operations System</div>
+          <h1>
+            Lost something?<br>
+            <span class="highlight">We'll find it.</span>
+          </h1>
+          <p class="lead">A unified board where students and staff log lost and found items across campus — searchable, filterable, and always up to date.</p>
+
+          <form onsubmit="onSearchSubmit(event)" class="hero-search">
+            <input type="text" id="heroSearch" placeholder="Search by name, location, or category…"
+                   autocomplete="off" oninput="onSearchInput(this)">
+            <button type="submit">Search</button>
+          </form>
+
+          <div class="hero-stats">
+            <div class="hero-stat">
+              <div class="stat-value" id="statTotal">–</div>
+              <div class="stat-label">Total</div>
+            </div>
+            <div class="hero-stat">
+              <div class="stat-value" id="statLost">–</div>
+              <div class="stat-label">Lost</div>
+            </div>
+            <div class="hero-stat">
+              <div class="stat-value" id="statFound">–</div>
+              <div class="stat-label">Found</div>
+            </div>
+            <div class="hero-stat">
+              <div class="stat-value" id="statClaimed">–</div>
+              <div class="stat-label">Claimed</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Filter Bar ── -->
+  <div class="cf-filters">
+    <div class="container">
+      <div class="d-flex align-items-center gap-2 flex-wrap">
+        <span class="filter-label">Status</span>
+        <button class="filter-btn filter-status active" data-status="all" onclick="filterByStatus(this,'all')">All</button>
+        <button class="filter-btn filter-status status-lost"    onclick="filterByStatus(this,'Lost')">Lost</button>
+        <button class="filter-btn filter-status status-found"   onclick="filterByStatus(this,'Found')">Found</button>
+        <button class="filter-btn filter-status status-claimed" onclick="filterByStatus(this,'Claimed')">Claimed</button>
+        <div class="filter-divider mx-1"></div>
+        <span class="filter-label">Category</span>
+        <div id="categoryFilters" class="d-flex gap-2 flex-wrap"></div>
+        <button class="filter-btn ms-1" onclick="clearSearch()">✕ Clear</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Items Grid ── -->
+  <main class="container py-4">
+    <div id="itemsAlert" class="mb-3"></div>
+
+    <!-- Fetch API tip banner -->
+    <div class="tip-card d-none mb-4" id="tipBanner">
+      <span class="tip-icon">📡</span>
+      <div>
+        <div class="tip-label">Live API</div>
+        <p id="campusTip"></p>
+      </div>
+    </div>
+
+    <div class="section-head">
+      <h2>Lost &amp; Found Board</h2>
+      <span class="item-count-badge" id="itemCount"></span>
+    </div>
+
+    <div class="row g-3" id="itemsGrid"></div>
+  </main>
+
+  <!-- ── Footer ── -->
+  <footer class="cf-footer">
+    <div class="container">
+      <div class="row g-4">
+        <div class="col-md-4">
+          <div class="footer-brand">
+            <span class="f-icon">📡</span>
+            CampusFind
+          </div>
+          <p class="footer-desc">A campus-wide lost and found system. Static deployment on Netlify — no backend, no database.</p>
+        </div>
+        <div class="col-md-4">
+          <div class="footer-heading">Navigation</div>
+          <div class="footer-links">
+            <a href="index.html">Browse Items</a>
+            <a href="submit.html">Report an Item</a>
+            <a href="login.html">Admin Portal</a>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="footer-heading">About</div>
+          <p class="footer-desc">Built for the IT Final Project — Track B: Static Tool Deployment.</p>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <span>&copy; 2026 CampusFind — IT Final Project</span>
+        <span class="status-dot">System Online</span>
+      </div>
+    </div>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="assets/js/storage.js"></script>
+  <script src="assets/js/ui.js"></script>
+  <script src="assets/js/api.js"></script>
+  <script src="assets/js/app.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', initHomePage);
+  </script>
+</body>
+</html>

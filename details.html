@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Item Details – CampusFind</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+
+  <!-- Navbar -->
+  <nav class="cf-navbar navbar navbar-expand-lg">
+    <div class="container">
+      <a class="navbar-brand" href="index.html">
+        <span class="brand-icon">📡</span>
+        <span class="brand-name">CampusFind</span>
+        <span class="brand-tag">v2</span>
+      </a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNav">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="mainNav">
+        <ul class="navbar-nav ms-auto align-items-lg-center gap-1">
+          <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
+          <li class="nav-item"><a class="nav-link" href="submit.html">Report Item</a></li>
+          <li class="nav-item ms-lg-2">
+            <a class="nav-link btn-nav-admin" href="login.html">Admin Portal</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Page Header -->
+  <div class="cf-page-header">
+    <div class="container">
+      <div class="cf-breadcrumb">
+        <a href="index.html">Home</a>
+        <span>/</span>
+        <span class="current">Item Details</span>
+      </div>
+      <h1>Item Details</h1>
+      <p>Full information about this lost or found item.</p>
+    </div>
+  </div>
+
+  <!-- Detail Content -->
+  <main class="container py-5">
+    <div id="detailContent"></div>
+  </main>
+
+  <!-- CTA strip -->
+  <div class="container pb-5">
+    <div style="background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:1.75rem;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:1rem;">
+      <div>
+        <div style="font-family:var(--font-display);font-weight:700;color:var(--text-primary);margin-bottom:.3rem;">Is this yours?</div>
+        <p style="font-size:.88rem;color:var(--text-secondary);margin:0;">Contact the reporter directly or visit the campus Lost &amp; Found office in the Administration Building.</p>
+      </div>
+      <a href="submit.html" class="btn-cf-outline">Report Another Item</a>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="cf-footer">
+    <div class="container">
+      <div class="footer-bottom">
+        <span>&copy; 2026 CampusFind — IT Final Project</span>
+        <span class="status-dot">System Online</span>
+      </div>
+    </div>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="assets/js/storage.js"></script>
+  <script src="assets/js/ui.js"></script>
+  <script src="assets/js/api.js"></script>
+  <script src="assets/js/app.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', initDetailsPage);
+  </script>
+</body>
+</html>

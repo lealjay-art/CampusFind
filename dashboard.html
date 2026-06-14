@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Dashboard – CampusFind</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+
+  <!-- Sidebar overlay (mobile) -->
+  <div class="sidebar-overlay" id="sidebarOverlay" onclick="toggleSidebar()"></div>
+
+  <!-- Sidebar -->
+  <aside class="admin-sidebar" id="adminSidebar">
+    <div class="sidebar-brand">
+      <div class="s-icon">📡</div>
+      <div class="s-text">
+        <h2>CampusFind</h2>
+        <p>Admin Dashboard</p>
+      </div>
+    </div>
+
+    <nav class="sidebar-nav">
+      <div class="nav-section-label" style="color:#4d6080;">Main</div>
+      <a href="dashboard.html" class="active" style="color:#4f8eff !important;">
+        <span class="nav-icon">📊</span> Dashboard
+      </a>
+      <div class="nav-section-label" style="color:#4d6080;margin-top:.5rem;">Public</div>
+      <a href="index.html" target="_blank">
+        <span class="nav-icon">🏠</span> Browse Board
+      </a>
+      <a href="submit.html" target="_blank">
+        <span class="nav-icon">📋</span> Submit Form
+      </a>
+    </nav>
+
+    <div class="sidebar-footer">
+      <button class="btn-logout" onclick="handleLogout()">
+        🚪 Sign Out
+      </button>
+    </div>
+  </aside>
+
+  <!-- Main Area -->
+  <div class="admin-main">
+
+    <!-- Topbar -->
+    <div class="admin-topbar">
+      <div class="d-flex align-items-center gap-3">
+        <button class="d-lg-none action-btn" onclick="toggleSidebar()">☰</button>
+        <h1>Dashboard</h1>
+      </div>
+      <div class="topbar-actions">
+        <div class="admin-user-chip">
+          <span class="avatar">A</span>
+          Admin
+        </div>
+        <button class="btn-cf-primary" onclick="openAddModal()">+ Add Item</button>
+      </div>
+    </div>
+
+    <!-- Content -->
+    <div class="admin-content">
+      <div id="dashAlert" class="mb-3"></div>
+
+      <!-- Stat Cards -->
+      <div class="row g-3 mb-4">
+        <div class="col-6 col-lg-3">
+          <div class="cf-stat-card total">
+            <div class="stat-icon">📦</div>
+            <div>
+              <div class="stat-number" id="dashTotal" style="color:#f0f6ff;">–</div>
+              <div class="stat-label" style="color:#8ba4c8;">Total Items</div>
+            </div>
+          </div>
+        </div>
+        <div class="col-6 col-lg-3">
+          <div class="cf-stat-card lost">
+            <div class="stat-icon">🔴</div>
+            <div>
+              <div class="stat-number" id="dashLost" style="color:#ff5e7a;">–</div>
+              <div class="stat-label" style="color:#8ba4c8;">Lost</div>
+            </div>
+          </div>
+        </div>
+        <div class="col-6 col-lg-3">
+          <div class="cf-stat-card found">
+            <div class="stat-icon">🟢</div>
+            <div>
+              <div class="stat-number" id="dashFound" style="color:#00d48a;">–</div>
+              <div class="stat-label" style="color:#8ba4c8;">Found</div>
+            </div>
+          </div>
+        </div>
+        <div class="col-6 col-lg-3">
+          <div class="cf-stat-card claimed">
+            <div class="stat-icon">🟡</div>
+            <div>
+              <div class="stat-number" id="dashClaimed" style="color:#fbbf24;">–</div>
+              <div class="stat-label" style="color:#8ba4c8;">Claimed</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Items Table -->
+      <div class="cf-admin-table">
+        <div class="table-toolbar">
+          <h5>All Items</h5>
+          <div class="d-flex gap-2 flex-wrap align-items-center">
+            <span class="filter-label">Status</span>
+            <button class="filter-btn dash-status-filter active" onclick="dashFilterStatus(this,'all')">All</button>
+            <button class="filter-btn dash-status-filter status-lost"    onclick="dashFilterStatus(this,'Lost')">Lost</button>
+            <button class="filter-btn dash-status-filter status-found"   onclick="dashFilterStatus(this,'Found')">Found</button>
+            <button class="filter-btn dash-status-filter status-claimed" onclick="dashFilterStatus(this,'Claimed')">Claimed</button>
+          </div>
+          <div class="d-flex gap-2 align-items-center">
+            <span class="filter-label">Category</span>
+            <select class="form-select form-select-sm status-select" id="dashCategoryFilter"
+                    onchange="dashFilterCategory(this.value)" style="width:155px;border-radius:99px!important;">
+              <option value="all">All Categories</option>
+              <option>Electronics</option>
+              <option>Accessories</option>
+              <option>Books &amp; Stationery</option>
+              <option>Clothing &amp; Accessories</option>
+              <option>Bottles &amp; Containers</option>
+              <option>ID &amp; Documents</option>
+              <option>Keys</option>
+              <option>Sports &amp; Recreation</option>
+              <option>Jewelry</option>
+              <option>Other</option>
+            </select>
+          </div>
+          <div class="ms-auto d-flex gap-2">
+            <input type="search" class="form-control form-control-sm" id="dashSearch"
+                   placeholder="Search items…" style="width:180px;">
+            <button class="btn-cf-primary" onclick="openAddModal()" style="padding:.45rem 1rem;font-size:.83rem;">+ Add</button>
+          </div>
+        </div>
+
+        <div class="table-responsive">
+          <table class="table">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Item</th>
+                <th>Category</th>
+                <th>Location</th>
+                <th>Status</th>
+                <th>Date</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="itemsTableBody"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── ADD / EDIT MODAL ── -->
+  <div class="modal fade" id="itemModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-scrollable">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="modalTitle">Add New Item</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body">
+          <div id="modalAlert" class="mb-3"></div>
+          <form id="itemForm" novalidate>
+            <input type="hidden" id="itemId" name="itemId">
+            <div class="row g-3">
+              <div class="col-md-8">
+                <label class="form-label">Item Name <span style="color:var(--lost-color)">*</span></label>
+                <input type="text" class="form-control" id="fItemName" name="itemName"
+                       placeholder="e.g. Black Wallet" maxlength="100" required>
+              </div>
+              <div class="col-md-4">
+                <label class="form-label">Category <span style="color:var(--lost-color)">*</span></label>
+                <select class="form-select" id="fCategory" name="category" required>
+                  <option value="">Select…</option>
+                  <option>Electronics</option>
+                  <option>Accessories</option>
+                  <option>Books &amp; Stationery</option>
+                  <option>Clothing &amp; Accessories</option>
+                  <option>Bottles &amp; Containers</option>
+                  <option>ID &amp; Documents</option>
+                  <option>Keys</option>
+                  <option>Sports &amp; Recreation</option>
+                  <option>Jewelry</option>
+                  <option>Other</option>
+                </select>
+              </div>
+              <div class="col-12">
+                <label class="form-label">Description <span style="color:var(--lost-color)">*</span></label>
+                <textarea class="form-control" id="fDescription" name="description" rows="3"
+                          placeholder="Describe the item…" maxlength="500" required></textarea>
+              </div>
+              <div class="col-md-6">
+                <label class="form-label">Location <span style="color:var(--lost-color)">*</span></label>
+                <input type="text" class="form-control" id="fLocation" name="location"
+                       placeholder="e.g. Library – 2nd Floor" maxlength="100" required>
+              </div>
+              <div class="col-md-3">
+                <label class="form-label">Status <span style="color:var(--lost-color)">*</span></label>
+                <select class="form-select" id="fStatus" name="status" required>
+                  <option value="">Select…</option>
+                  <option value="Lost">Lost</option>
+                  <option value="Found">Found</option>
+                  <option value="Claimed">Claimed</option>
+                </select>
+              </div>
+              <div class="col-md-3">
+                <label class="form-label">Date Reported</label>
+                <input type="date" class="form-control" id="fDateReported" name="dateReported">
+              </div>
+              <div class="col-md-6">
+                <label class="form-label">Reported By</label>
+                <input type="text" class="form-control" id="fReportedBy" name="reportedBy"
+                       placeholder="Name or anonymous" maxlength="80">
+              </div>
+              <div class="col-md-6">
+                <label class="form-label">Contact</label>
+                <input type="text" class="form-control" id="fContact" name="contact"
+                       placeholder="Email or phone" maxlength="100">
+              </div>
+              <div class="col-12">
+                <label class="form-label">Photo (optional)</label>
+                <input type="file" class="form-control" id="adminImageInput" name="image" accept="image/*">
+                <img id="adminImagePreview" alt="Preview">
+              </div>
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn-cf-outline" data-bs-dismiss="modal">Cancel</button>
+          <button type="button" class="btn-cf-primary" id="saveItemBtn"
+                  onclick="document.getElementById('itemForm').dispatchEvent(new Event('submit'))">
+            💾 Save Item
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── DELETE MODAL ── -->
+  <div class="modal fade" id="deleteModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-sm modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Confirm Delete</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body text-center py-3">
+          <div style="font-size:2.5rem;margin-bottom:.75rem;opacity:.5">🗑️</div>
+          <p style="font-size:.9rem;color:var(--text-primary);margin-bottom:.5rem;">
+            Delete <strong id="deleteItemName">"this item"</strong>?
+          </p>
+          <p style="font-size:.8rem;color:var(--text-dim);margin:0;">This action cannot be undone.</p>
+        </div>
+        <div class="modal-footer justify-content-center gap-2">
+          <button type="button" class="btn-cf-outline" data-bs-dismiss="modal">Cancel</button>
+          <button type="button" id="confirmDeleteBtn"
+                  style="background:var(--lost-color);color:#fff;border:none;border-radius:var(--radius-sm);padding:.6rem 1.4rem;font-weight:600;cursor:pointer;font-family:var(--font-body);"
+                  onclick="executeDelete()">Delete</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="assets/js/storage.js"></script>
+  <script src="assets/js/ui.js"></script>
+  <script src="assets/js/api.js"></script>
+  <script src="assets/js/auth.js"></script>
+  <script src="assets/js/dashboard.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const today = new Date().toISOString().split('T')[0];
+      document.getElementById('fDateReported').value = today;
+      initDashboard();
+    });
+  </script>
+</body>
+</html>
